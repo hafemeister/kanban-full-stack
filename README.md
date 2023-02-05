@@ -37,4 +37,9 @@ Build a simple web application that provides a functional kanban-like implementa
 -   Saturday
     -   [1000-1200] - setup the basic framework, tooling and establish deployment chain to cloud run
     -   [1200-1300] - establish basic list connectivity to firestore via package and swimlane endpoint prototype
-    -   [1700-1900] - build out model based class structures to interact with crud requests and firestore
+    -   [1700-2000] - build out model based class structures to interact with crud requests and firestore
+
+#### Follow up to-dos
+
+-   make model load generic
+-   figure out if writeAttribute guards are actually needed
