@@ -24,9 +24,9 @@ Build a simple web application that provides a functional kanban-like implementa
 -   Friday - scope out tools box, existing designs for mobile kanban, any interesting new tech i would like to learn about
 -   Saturday
     -   [2 hours] - setup CICD pipeline
-    -   [3 hours] - establish backend and persistent storage layer
-    -   [3 hours] - build out simple ui prototype
+    -   [3 hours] - establish backend and persistant storage layer
 -   Sunday
+    -   [3 hours] - build out simple ui prototype
     -   [3 hours] - expand baseline unit tests, integrate them into pipeline
     -   [2 hours] - explore edge cases, fix bugs
     -   [2 hours] - document results, lessons learned, future improvement suggestions

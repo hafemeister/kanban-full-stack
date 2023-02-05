@@ -1,4 +1,4 @@
-import { isUndefined } from "lodash-es"
+import { forEach, isUndefined } from "lodash-es"
 import { makeTypedModelFieldNames } from "./module"
 import { ID, IsoDateTime } from "./types"
 import { FirestoreBaseModel } from "./firestoreBase"
@@ -40,5 +40,17 @@ export class SwimlaneModel extends FirestoreBaseModel<SwimlaneFields, SwimlaneMo
 
     static async listAll(): Promise<SwimlaneFields[]> {
         return await this.listAllDocuments<SwimlaneFields>(this.collectionName)
+    }
+
+    /**
+     * generates and saves one model per title, using the index as positional value
+     *
+     * @param titles: string[]
+     */
+    static async createBatch(titles: string[]) {
+        forEach(
+            titles,
+            async (title, position) => await new SwimlaneModel({ title, position }).save()
+        )
     }
 }
