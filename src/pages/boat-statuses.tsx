@@ -124,6 +124,7 @@ export default function BoatStatuses() {
                                     One moment please while we load your list of boats...
                                 </Box>
                             )}
+
                             {!isFirstLoad && (
                                 <Grid
                                     container

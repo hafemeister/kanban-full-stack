@@ -19,6 +19,12 @@ Build a simple web application that provides a functional kanban-like implementa
 
 ## Extended Notes
 
+### Goals
+
+-   have fun
+-   learn something new
+-   complete the technical challenge requirements
+
 ### Preliminary Plan
 
 -   Friday - scope out tools box, existing designs for mobile kanban, any interesting new tech i would like to learn about
@@ -40,8 +46,18 @@ Build a simple web application that provides a functional kanban-like implementa
     -   [1700-2000] - build out model based class structures to interact with crud requests and firestore
 -   Sunday
     -   [1100-1600] - building out the ui elements from mui base, getting stuck on react-18 issues with dnd package, finishing the rest of basic kanban functionality with data loaded from remote
+    -   [1600-1800] - wiring up the data layer to ui, troubleshoot deployment snags, going through overall app and checking for obvious bugs
 
 #### Follow up to-dos
 
 -   make model load generic
 -   figure out if writeAttribute guards are actually needed
+
+-   feat: need ui controls for delete of single boat
+-   feat: edit boat name feature
+-   document
+-   add tests
+-   feat: hook up context values for switching between operator and
+-   feat: finish environment prefix for collection names
+-   feat: add minimum of 6 valuable tests for test coverage
+-   feat: enable auto refresh

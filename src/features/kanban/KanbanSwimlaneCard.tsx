@@ -1,23 +1,29 @@
 import { ID } from "@/backend/models/types"
-import { Card, CardActions, CardContent } from "@mui/material"
-import { RefObject } from "react"
+import { Box, Card, CardContent } from "@mui/material"
 import { DraggableProvided } from "react-beautiful-dnd"
 
 type SwimlaneCardProps = {
     title: string
     id?: ID
     dragTools?: DraggableProvided
+    barOnly?: boolean
 }
 
-export function SwimlaneCard({ title, dragTools }: SwimlaneCardProps) {
+export function SwimlaneCard({ title, barOnly, dragTools }: SwimlaneCardProps) {
     return (
         <Card
             ref={dragTools?.innerRef}
             {...dragTools?.dragHandleProps}
             {...dragTools?.draggableProps}
         >
-            <CardContent>{title}</CardContent>
-            <CardActions></CardActions>
+            <CardContent>
+                {!barOnly && (
+                    <Box display="flex" justifyContent="center" alignItems="center" my={2}>
+                        {title}
+                    </Box>
+                )}
+                {barOnly && <Box sx={{ height: "1px" }} />}
+            </CardContent>
         </Card>
     )
 }
