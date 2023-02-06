@@ -9,11 +9,9 @@ on:
 jobs:
     call-inspect-code:
       uses: hafemeister/kanban-full-stack/.github/workflows/inspect-code.yaml@main
-
     call-inspect-code:
       needs: call-inspect-code
       uses: hafemeister/kanban-full-stack/.github/workflows/unit-test-code.yaml@main
-
     call-deploy-to-cloud-run:
       needs: call-inspect-code
       uses: hafemeister/kanban-full-stack/.github/workflows/deploy-to-cloud-run.yaml@main
