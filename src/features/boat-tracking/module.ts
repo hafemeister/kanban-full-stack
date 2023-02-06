@@ -1,4 +1,4 @@
-import { BoatFields, BoatModel } from "@/backend/models/boats"
+import { BoatFields } from "@/backend/models/boats"
 import { ID } from "@/backend/models/types"
 import { ServerResponseCodes } from "@/constants/server"
 import { groupBy, isEmpty } from "lodash-es"
@@ -114,7 +114,7 @@ export async function updateBoatName(id: ID, name: string): Promise<BoatFields |
     })
 
     const result = await response.json()
-    console.log({ result })
+
     if (isEmpty(result)) {
         return undefined
     }

@@ -1,5 +1,4 @@
 import { Avatar, Box, Card, CardContent, CardHeader } from "@mui/material"
-import { green } from "@mui/material/colors"
 import { upperCase } from "lodash-es"
 
 type KanbanSwimlaneProps = {

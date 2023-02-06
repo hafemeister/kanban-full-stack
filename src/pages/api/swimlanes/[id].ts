@@ -6,7 +6,7 @@ import {
     methodNotAllowed,
 } from "@/backend/tools/request"
 import { SwimlaneModel, SwimlaneFields } from "@/backend/models/swimlanes"
-import { isEmpty, isObject, isString, isUndefined, rest } from "lodash-es"
+import { isEmpty, isObject, isString, isUndefined } from "lodash-es"
 import { ServerResponseCodes } from "@/constants/server"
 
 type ResponseData = Partial<SwimlaneFields> | boolean
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     if (isDelete) {
         const result = await swimlane.delete()
 
-        return jsonSuccess(res, true)
+        return jsonSuccess(res, result)
     }
 
     if (isGet) {

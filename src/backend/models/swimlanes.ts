@@ -1,5 +1,4 @@
-import { forEach, isUndefined } from "lodash-es"
-import { makeTypedModelFieldNames } from "./module"
+import { isUndefined } from "lodash-es"
 import { ID, IsoDateTime } from "./types"
 import { FirestoreBaseModel } from "./firestoreBase"
 import { AvailableFirestoreCollections } from "@/integrations/google-cloud"
@@ -12,14 +11,10 @@ export type SwimlaneFields = {
     updatedAt: IsoDateTime
 }
 
-type SwimlaneModelWriteFields = Pick<SwimlaneFields, "position" | "title">
-const writeAttributes = makeTypedModelFieldNames<SwimlaneModelWriteFields>("position", "title")
-
-export class SwimlaneModel extends FirestoreBaseModel<SwimlaneFields, SwimlaneModel> {
+export class SwimlaneModel extends FirestoreBaseModel<SwimlaneFields> {
     static collectionName = AvailableFirestoreCollections.Swimlanes
 
     constructor(fields: Partial<SwimlaneFields>) {
-        // @todo -- add writeAttributes for more robust consistency
         super(SwimlaneModel.collectionName, fields)
     }
 

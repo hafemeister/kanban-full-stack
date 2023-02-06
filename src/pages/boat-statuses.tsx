@@ -24,10 +24,9 @@ import { BoatCreatorControl } from "@/features/boat-tracking/BoatCreatorControl"
 import { BoatResetControl } from "@/features/boat-tracking/BoatResetControl"
 import { ExpandMore } from "@mui/icons-material"
 import { Stack } from "@mui/system"
-import { useInterval } from "@/tools/useInterval"
 
 export default function BoatStatuses() {
-    const [{ isLoading, swimlanes, autoRefresh, refreshedAt, count }, setState] = useState({
+    const [{ isLoading, swimlanes, autoRefresh, refreshedAt }, setState] = useState({
         autoRefresh: false,
         isLoading: true,
         swimlanes: {} as SwimlaneBoatMap,

@@ -1,14 +1,11 @@
 import Head from "next/head"
 import { ContentWithTopNavigation } from "@/features/layouts/ContentWithTopNavigation"
 import { Button, Stack } from "@mui/material"
-import { useCallback } from "react"
-import { useRouter } from "next/router"
 import { useNavigation } from "@/features/navigation/useNavigation"
 
 export default function Home() {
     const { go } = useNavigation("/boat-statuses")
     const canShowBoats = true
-    const hasSelectedMode = true
 
     return (
         <>

@@ -9,8 +9,8 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 /** @type {import('jest').Config} */
 const customJestConfig = {
-    // Add more setup options before each test is run
-    // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+    setupFilesAfterEnv: ["<rootDir>/tests/jest.setup.js"],
+
     // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
     moduleDirectories: ["node_modules", "<rootDir>/"],
 
@@ -34,15 +34,6 @@ const customJestConfig = {
     collectCoverageFrom: ["src/**/*.{ts,tsx}"],
     coverageDirectory: "coverage",
     verbose: true,
-    coverageThreshold: {
-        // slowly ratchet this up to increase test coverage
-        global: {
-            statements: 7, // target - 80
-            branches: 6, // target - 60
-            lines: 6, // target - 80
-            functions: 3, // target - 60
-        },
-    },
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

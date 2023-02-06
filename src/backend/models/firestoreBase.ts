@@ -16,7 +16,7 @@ export type BaseModelFields = {
     id?: ID
 }
 
-export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields, ThisClass> {
+export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields> {
     collectionName: string
     protected fields: Partial<ModelFields>
 

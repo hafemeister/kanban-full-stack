@@ -1,16 +1,8 @@
 import { ID } from "@/backend/models/types"
-import {
-    Button,
-    Card,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    IconButton,
-    TextField,
-} from "@mui/material"
+import { Button, Dialog, DialogActions, DialogContent, IconButton, TextField } from "@mui/material"
 import { isEmpty, isUndefined } from "lodash-es"
 import { useCallback, useState } from "react"
-import { addNewBoat, deleteBoat, updateBoatName } from "./module"
+import { deleteBoat, updateBoatName } from "./module"
 import { isValidId } from "@/tools/isValidId"
 import { Edit } from "@mui/icons-material"
 

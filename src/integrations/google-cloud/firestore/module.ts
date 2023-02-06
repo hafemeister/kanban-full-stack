@@ -4,7 +4,7 @@ import { AvailableFirestoreCollections, store } from "./firestore.config"
 // modified for our use from original found here: https://cloud.google.com/firestore/docs/manage-data/delete-data#collections
 export async function deleteCollection(
     collectionPath: AvailableFirestoreCollections,
-    batchSize: number = 10
+    batchSize = 10
 ) {
     const collectionRef = store.collection(collectionPath)
     const query = collectionRef.orderBy("__name__").limit(batchSize)
