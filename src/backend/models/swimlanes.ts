@@ -30,7 +30,7 @@ export class SwimlaneModel extends FirestoreBaseModel<SwimlaneFields, SwimlaneMo
             return undefined
         }
 
-        const result = await this.loadDocumentFromId(id, this.collectionName)
+        const result = await this.loadDocumentFromId(id)
         if (!isUndefined(result)) {
             this.fields = result
 
