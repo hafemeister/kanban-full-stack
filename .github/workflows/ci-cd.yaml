@@ -15,9 +15,13 @@ jobs:
                   node-version: 19
                   cache: "npm"
             - name: inspect:lint
-              run: npm run inspect:lint
+              run: |
+                  npm ci
+                  npm run inspect:lint
             - name: inspect:tsc
-              run: npm run inspect:tsc
+              run: |
+                  npm ci
+                  npm run inspect:tsc
     # test:
     #     runs-on: ubuntu-latest
     #     steps:
