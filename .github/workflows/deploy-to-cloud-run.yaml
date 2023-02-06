@@ -1,6 +1,6 @@
 name: deploy-to-cloud-run
 
-on: [workflow_dispatch]
+on: [workflow_dispatch, workflow_call]
 
 env:
     GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_NAME }}
