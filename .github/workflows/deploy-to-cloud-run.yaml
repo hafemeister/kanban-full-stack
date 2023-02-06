@@ -18,6 +18,25 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
+
+            # checkout gives us sha, so we cannot set image name any sooner
             - name: set IMAGE_NAME env value
               run: echo "IMAGE_NAME=gcr.io/$GCP_PROJECT/$REPO_NAME:$GITHUB_SHA" >> $GITHUB_ENV
-            - run: echo $IMAGE_NAME
+            - run: echo "Storing output as $IMAGE_NAME"
+            
+            - uses: google-github-actions/auth@v1
+              with:
+                  credentials_json: ${{ secrets.GCP_SA_KEY }}
+                  service_account: ${{ secrets.GCP_SA_EMAIL }}
+    
+            - name: Enable the necessary APIs and enable docker auth
+              run: |-
+                  gcloud services enable containerregistry.googleapis.com
+                  gcloud services enable run.googleapis.com
+                  gcloud --quiet auth configure-docker
+
+            - name: Build and tag image
+              run: |-
+                  echo "tagging image as $IMAGE_NAME"
+                  docker build . --tag "$IMAGE_NAME"
+
