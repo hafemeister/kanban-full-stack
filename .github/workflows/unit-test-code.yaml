@@ -1,0 +1,36 @@
+name: ci-cd
+
+on:
+    push:
+        branches:
+            - "features**"
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 19
+                  cache: "npm"
+            - name: inspect:lint
+              run: |
+                  npm ci
+                  npm run inspect:lint
+            - name: inspect:tsc
+              run: |
+                  npm ci
+                  npm run inspect:tsc
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 19
+                  cache: "npm"
+            - name: test
+              run: |
+                  npm ci
+                  npm run test
