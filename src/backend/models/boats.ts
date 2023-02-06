@@ -31,7 +31,7 @@ export class BoatModel extends FirestoreBaseModel<BoatFields, BoatModel> {
             return undefined
         }
 
-        const result = await this.loadDocumentFromId(id, BoatModel.collectionName)
+        const result = await this.loadDocumentFromId(id)
         if (!isUndefined(result)) {
             this.fields = result
 

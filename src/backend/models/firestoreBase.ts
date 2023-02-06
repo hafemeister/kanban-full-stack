@@ -7,6 +7,11 @@ import { ID } from "./types"
 import { isEmpty, isUndefined } from "lodash-es"
 import { CollectionReference } from "@google-cloud/firestore"
 
+const collectionPrefix = process.env.KFS_FIRESTORE_COLLECTION_PREFIX || ""
+function collectionWithEnvironmentPrefix(collectionName: string): CollectionReference {
+    return store.collection(`${collectionPrefix}${collectionName}`)
+}
+
 export type BaseModelFields = {
     id?: ID
 }
@@ -20,8 +25,8 @@ export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields, Th
         this.fields = fields
     }
 
-    async loadDocumentFromId(id: ID, collectionName: string): Promise<object | undefined> {
-        const snapshot = await store.collection(collectionName).doc(id).get()
+    async loadDocumentFromId(id: ID): Promise<object | undefined> {
+        const snapshot = await this.source().doc(id).get()
 
         if (!snapshot.exists) {
             return undefined
@@ -34,7 +39,7 @@ export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields, Th
     }
 
     static async listAllDocuments<ModelFields>(collectionName: string): Promise<ModelFields[]> {
-        const snapshot = await store.collection(collectionName).get()
+        const snapshot = await collectionWithEnvironmentPrefix(collectionName).get()
 
         const result = [] as ModelFields[]
 
@@ -51,7 +56,7 @@ export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields, Th
     }
 
     private source(collectionName?: AvailableFirestoreCollections): CollectionReference {
-        return store.collection(collectionName || this.collectionName)
+        return collectionWithEnvironmentPrefix(collectionName || this.collectionName)
     }
 
     async saveNew() {
