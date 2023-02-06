@@ -32,11 +32,11 @@ jobs:
 
             - name: Build and tag image
               run: |-
-                  docker build . --tag "gcr.io/$GCP_PROJECT_ID/$REPO_NAME:$GITHUB_SHA"
+                  docker build . --tag "${{ env.IMAGE_NAME }}"
                   
             - name: Push image to GCR
               run: |-
-                  docker push gcr.io/$GCP_PROJECT/$REPO_NAME:$GITHUB_SHA
+                  docker push "${{ env.IMAGE_NAME }}"
                   
             - id: 'deploy'
               uses: 'google-github-actions/deploy-cloudrun@v1'
