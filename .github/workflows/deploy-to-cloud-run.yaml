@@ -8,7 +8,7 @@ env:
     GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
     GCP_REGION: ${{ vars.GCP_REGION }}
     REPO_NAME: ${{ vars.REPO_NAME }}
-    IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/${{ vars.REPO_NAME }}:$GITHUB_SHA
+    IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/${{ vars.REPO_NAME }}:${{ env.GITHUB_SHA }}
 
 jobs:
     build-and-deploy:
