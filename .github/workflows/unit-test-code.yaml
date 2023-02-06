@@ -1,6 +1,7 @@
-name: ci-cd
+name: unit-test-code
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - "features**"

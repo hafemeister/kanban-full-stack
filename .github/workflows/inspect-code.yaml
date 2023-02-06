@@ -1,6 +1,7 @@
-name: ci-cd
+name: inspect-code
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - "features**"
