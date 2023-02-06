@@ -5,6 +5,9 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
+        "inspect:tsc": "tsc --noEmit",
+        "inspect:lint": "next lint",
+        "inspect": "npm run inspect:lint && npm run inspect:tsc",
         "start": "next start",
         "lint": "next lint",
         "test": "jest",

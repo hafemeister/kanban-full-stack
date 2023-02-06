@@ -7,9 +7,8 @@ on:
 
 env:
     GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_NAME }}
-    GCP_REGION: us-west1
-    # project-name but it can be anything you want
-    REPO_NAME: kanban-full-stack
+    GCP_REGION: ${{ vars.GCP_REGION }}
+    REPO_NAME: ${{ vars.REPO_NAME }}
 
 jobs:
     build-and-deploy:
@@ -17,7 +16,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             # This step is where our service account will be authenticated
             - uses: google-github-actions/setup-gcloud@v0.2.0

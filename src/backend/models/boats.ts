@@ -15,7 +15,7 @@ export type BoatFields = {
 type BoatModelWriteFields = Pick<BoatFields, "name" | "swimlaneId">
 const writeAttributes = makeTypedModelFieldNames<BoatModelWriteFields>("name", "swimlaneId")
 
-export class BoatModel extends FirestoreBaseModel<BoatFields, BoatModel> {
+export class BoatModel extends FirestoreBaseModel<BoatFields> {
     static collectionName = AvailableFirestoreCollections.Boats
     static writeAttributes = writeAttributes
 

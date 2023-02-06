@@ -11,7 +11,6 @@ describe("BoatCreatorControl component", () => {
         const result = getByText(/add a boat/i)
         expect(result).toBeInTheDocument()
     })
-
     it("shows form on click of add button", () => {
         const { getByText, queryByText, getAllByText } = render(
             <BoatEditorControl name="boatName" id="123" dataChangeListener={jest.fn()} />
