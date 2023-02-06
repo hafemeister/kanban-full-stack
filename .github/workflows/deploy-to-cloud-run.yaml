@@ -9,6 +9,7 @@ env:
     GCP_REGION: ${{ vars.GCP_REGION }}
     REPO_NAME: ${{ vars.REPO_NAME }}
     IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT }}/${{ vars.REPO_NAME }}:${{ env.GITHUB_SHA }}
+    GCP_SERVICE_NAME: "kanban-full-stack"
 
 jobs:
     build-and-deploy:
@@ -32,6 +33,7 @@ jobs:
 
             - name: Build and tag image
               run: |-
+              
                   docker build . --tag "${{ env.IMAGE_NAME }}"
                   
             - name: Push image to GCR
@@ -41,5 +43,5 @@ jobs:
             - id: 'deploy'
               uses: 'google-github-actions/deploy-cloudrun@v1'
               with: 
-                  service: 'hello-cloud-run'
-                  image: 'gcr.io/$GCP_PROJECT_ID/$REPO_NAME:$GITHUB_SHA'
+                  service: "${{ env.GCP_SERVICE_NAME }}"
+                  image: "${{ env.IMAGE_NAME }}"
