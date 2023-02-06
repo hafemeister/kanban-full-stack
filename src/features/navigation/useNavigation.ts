@@ -13,7 +13,6 @@ export function useNavigation(defaultTarget: RelativePathUrl): {
 
     const push = useCallback(
         (target?: RelativePathUrl) => {
-            console.log({ target, defaultTarget })
             router.push(target || defaultTarget)
         },
         [router, defaultTarget]

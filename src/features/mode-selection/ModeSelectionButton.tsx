@@ -10,7 +10,7 @@ export function ModeSelectionButton({ children }: ModeSelectionButtonProps) {
     const router = useRouter()
 
     const goToBoatStatusPage = useCallback(() => {
-        router.replace("/boat-status")
+        router.replace("/boat-statuses")
     }, [router])
 
     return (

@@ -17,6 +17,7 @@ const writeAttributes = makeTypedModelFieldNames<BoatModelWriteFields>("name", "
 
 export class BoatModel extends FirestoreBaseModel<BoatFields, BoatModel> {
     static collectionName = AvailableFirestoreCollections.Boats
+    static writeAttributes = writeAttributes
 
     constructor(fields: Partial<BoatFields>) {
         // @todo -- add writeAttributes for more robust consistency

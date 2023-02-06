@@ -55,12 +55,20 @@ export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields, Th
     }
 
     async saveNew() {
+        const nowInIso = new Date().toISOString()
+
         // firestore will create an id for us in this case
-        const response = await this.source().add(this.fields)
+        const response = await this.source().add({
+            ...this.fields,
+            updatedAt: nowInIso,
+            createdAt: nowInIso,
+        })
 
         this.fields = {
             ...this.fields,
             id: response.id,
+            updatedAt: nowInIso,
+            createdAt: nowInIso,
         }
 
         return this
@@ -73,15 +81,17 @@ export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields, Th
         if (isNew) {
             return this.saveNew()
         }
+        const nowInIso = new Date().toISOString()
 
         await this.source()
             .doc(id)
-            .set({ ...this.fields, ...(updatedFields || {}) }, { merge: true })
+            .set({ ...this.fields, ...(updatedFields || {}), updatedAt: nowInIso }, { merge: true })
 
         this.fields = {
             ...this.fields,
             ...updatedFields,
             id,
+            updatedAt: nowInIso,
         }
 
         return this

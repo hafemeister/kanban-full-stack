@@ -38,6 +38,8 @@ Build a simple web application that provides a functional kanban-like implementa
     -   [1000-1200] - setup the basic framework, tooling and establish deployment chain to cloud run
     -   [1200-1300] - establish basic list connectivity to firestore via package and swimlane endpoint prototype
     -   [1700-2000] - build out model based class structures to interact with crud requests and firestore
+-   Sunday
+    -   [1100-1600] - building out the ui elements from mui base, getting stuck on react-18 issues with dnd package, finishing the rest of basic kanban functionality with data loaded from remote
 
 #### Follow up to-dos
 

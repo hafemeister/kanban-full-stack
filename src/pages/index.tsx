@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 import { useNavigation } from "@/features/navigation/useNavigation"
 
 export default function Home() {
-    const { go } = useNavigation("/boat-status")
+    const { go } = useNavigation("/boat-statuses")
     const canShowBoats = true
     const hasSelectedMode = true
 

@@ -1,6 +1,7 @@
+import { BoatFields, BoatModel } from "@/backend/models/boats"
 import { ID } from "@/backend/models/types"
 import { ServerResponseCodes } from "@/constants/server"
-import { groupBy } from "lodash-es"
+import { groupBy, isEmpty } from "lodash-es"
 
 type BoatCardValues = {
     id: ID
@@ -51,6 +52,69 @@ export async function fetchBoatsAndGroupBySwimlanes(): Promise<SwimlaneBoatMap> 
         result[id] = lane
         result[id].items = groupedBoats[id] || []
     }
+
+    return result
+}
+
+export async function addNewBoat(name: string, swimlaneId: ID): Promise<BoatFields | undefined> {
+    const response = await fetch("/api/boats", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            name,
+            swimlaneId,
+        }),
+    })
+
+    const result = await response.json()
+
+    if (isEmpty(result)) {
+        return undefined
+    }
+
+    return result as BoatFields
+}
+
+export async function updateBoatStatus(id: ID, swimlaneId: ID): Promise<BoatFields | undefined> {
+    const response = await fetch(`/api/boats/${id}`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            id,
+            swimlaneId,
+        }),
+    })
+
+    const result = await response.json()
+
+    if (isEmpty(result)) {
+        return undefined
+    }
+
+    return result as BoatFields
+}
+
+export async function resetSwimlanesAndBoats(): Promise<boolean> {
+    const response = await fetch(`/api/reset`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            boats: true,
+            swimlanes: true,
+            addDefaultSwimlanes: true,
+        }),
+    })
+
+    const result = await response.json()
 
     return result
 }

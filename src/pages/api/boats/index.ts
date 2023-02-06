@@ -1,10 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import {
+    badRequest,
     checkForAllowedRequestMethods,
     jsonSuccess,
     methodNotAllowed,
 } from "@/backend/tools/request"
 import { BoatFields, BoatModel } from "@/backend/models/boats"
+import { isObject, pick } from "lodash-es"
 
 type ResponseData = BoatFields[] | Partial<BoatFields>
 
@@ -22,7 +24,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     const fields = req.body
-    const model = new BoatModel(fields)
+    if (!isObject(fields)) {
+        return badRequest(res)
+    }
+    const model = new BoatModel(pick(fields, BoatModel.writeAttributes))
     await model.save()
 
     return jsonSuccess(res, model.toJson())
