@@ -1,5 +1,5 @@
-import { Avatar, Box, Card, CardContent, CardHeader, Stack } from "@mui/material"
-import { red } from "@mui/material/colors"
+import { Avatar, Box, Card, CardContent, CardHeader } from "@mui/material"
+import { green } from "@mui/material/colors"
 import { upperCase } from "lodash-es"
 
 type KanbanSwimlaneProps = {
@@ -13,7 +13,7 @@ export function KanbanSwimlane({ children, title }: KanbanSwimlaneProps) {
             <Card sx={{ bgcolor: "info.light" }} variant="outlined">
                 <CardHeader
                     avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label={title}>
+                        <Avatar sx={{ bgcolor: "primary.main" }} aria-label={title}>
                             {upperCase(title[0])}
                         </Avatar>
                     }

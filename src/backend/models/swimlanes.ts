@@ -48,9 +48,11 @@ export class SwimlaneModel extends FirestoreBaseModel<SwimlaneFields, SwimlaneMo
      * @param titles: string[]
      */
     static async createBatch(titles: string[]) {
-        forEach(
-            titles,
-            async (title, position) => await new SwimlaneModel({ title, position }).save()
-        )
+        let position = 0
+
+        for (const title of titles) {
+            await new SwimlaneModel({ title, position }).save()
+            position++
+        }
     }
 }

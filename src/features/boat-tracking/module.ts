@@ -100,6 +100,40 @@ export async function updateBoatStatus(id: ID, swimlaneId: ID): Promise<BoatFiel
     return result as BoatFields
 }
 
+export async function updateBoatName(id: ID, name: string): Promise<BoatFields | undefined> {
+    const response = await fetch(`/api/boats/${id}`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            id,
+            name,
+        }),
+    })
+
+    const result = await response.json()
+    console.log({ result })
+    if (isEmpty(result)) {
+        return undefined
+    }
+
+    return result as BoatFields
+}
+
+export async function deleteBoat(id: ID): Promise<boolean> {
+    const response = await fetch(`/api/boats/${id}`, {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+    })
+
+    return await response.json()
+}
+
 export async function resetSwimlanesAndBoats(): Promise<boolean> {
     const response = await fetch(`/api/reset`, {
         method: "POST",

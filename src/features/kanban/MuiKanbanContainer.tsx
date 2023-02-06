@@ -1,14 +1,4 @@
-import {
-    Alert,
-    Card,
-    CardContent,
-    CardHeader,
-    IconButton,
-    Snackbar,
-    Stack,
-    duration,
-    useMediaQuery,
-} from "@mui/material"
+import { Alert, IconButton, Snackbar, Stack, useMediaQuery } from "@mui/material"
 import { KanbanSwimlane } from "@/features/kanban/KanbanSwimlane"
 import { SwimlaneCard } from "@/features/kanban/KanbanSwimlaneCard"
 import {
@@ -36,6 +26,7 @@ type KanbanContainerProps = {
         }[]
     }[]
     dragEndHandler: OnDragEndResponder
+    dataChangeHandler: VoidFunction
 }
 
 /**
@@ -45,6 +36,7 @@ type KanbanContainerProps = {
 export function MuiKanbanContainer({
     swimlanes,
     dragEndHandler: dragEndHandlerExtension,
+    dataChangeHandler,
 }: KanbanContainerProps) {
     const [isDraggingId, setIsDraggingId] = useState<string | undefined>()
     const [showAlert, setShowAlert] = useState(true)
@@ -111,13 +103,13 @@ export function MuiKanbanContainer({
                                         >
                                             {(dragTools) => (
                                                 <SwimlaneCard
-                                                    barOnly={
-                                                        !isWideEnoughScreen &&
-                                                        isDragging &&
-                                                        isDraggingId !== item.id
+                                                    id={item.id}
+                                                    isDragging={
+                                                        isDragging && isDraggingId === item.id
                                                     }
                                                     title={item.name}
                                                     dragTools={dragTools}
+                                                    dataChangeHandler={dataChangeHandler}
                                                 ></SwimlaneCard>
                                             )}
                                         </Draggable>

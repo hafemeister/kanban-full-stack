@@ -8,37 +8,33 @@ import {
     SwimlaneBoatMap,
     fetchBoatsAndGroupBySwimlanes,
     updateBoatStatus,
-} from "@/features/boat-status-tracking/module"
+} from "@/features/boat-tracking/module"
 import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
     Box,
-    Button,
     Card,
     CardContent,
-    Dialog,
-    DialogActions,
-    DialogContent,
     Grid,
     Switch,
-    TextField,
     Typography,
 } from "@mui/material"
-import { BoatCreatorControl } from "@/features/boat-status-tracking/BoatCreatorControl"
-import { BoatResetControl } from "@/features/boat-status-tracking/BoatResetControl"
+import { BoatCreatorControl } from "@/features/boat-tracking/BoatCreatorControl"
+import { BoatResetControl } from "@/features/boat-tracking/BoatResetControl"
 import { ExpandMore } from "@mui/icons-material"
 import { Stack } from "@mui/system"
+import { useInterval } from "@/tools/useInterval"
 
 export default function BoatStatuses() {
-    const [{ isLoading, swimlanes, autoRefresh, refreshedAt }, setState] = useState({
+    const [{ isLoading, swimlanes, autoRefresh, refreshedAt, count }, setState] = useState({
         autoRefresh: false,
         isLoading: true,
         swimlanes: {} as SwimlaneBoatMap,
         refreshedAt: undefined as Date | undefined,
+        count: 0,
     })
 
-    console.log({ swimlanes })
     const moveBoat = useCallback(
         async (dropResult: DropResult) => {
             const { droppableId: oldLaneId, index: oldLaneIndex } = dropResult.source
@@ -74,6 +70,8 @@ export default function BoatStatuses() {
 
         setState((s) => ({ ...s, swimlanes: result, isLoading: false, refreshedAt: new Date() }))
     }, [])
+
+    // useInterval(refreshStatuses, 10000)
 
     useEffect(() => {
         refreshStatuses()
@@ -161,7 +159,11 @@ export default function BoatStatuses() {
                     />
                 )}
 
-                <MuiKanbanContainer swimlanes={orderedSwimlanes} dragEndHandler={moveBoat} />
+                <MuiKanbanContainer
+                    swimlanes={orderedSwimlanes}
+                    dragEndHandler={moveBoat}
+                    dataChangeHandler={refreshStatuses}
+                />
             </ContentWithTopNavigation>
         </>
     )

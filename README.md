@@ -47,6 +47,7 @@ Build a simple web application that provides a functional kanban-like implementa
 -   Sunday
     -   [1100-1600] - building out the ui elements from mui base, getting stuck on react-18 issues with dnd package, finishing the rest of basic kanban functionality with data loaded from remote
     -   [1600-1800] - wiring up the data layer to ui, troubleshoot deployment snags, going through overall app and checking for obvious bugs
+    -   [2000-2200] - build out delete, edit ui and data-layer glue. add auto polling.
 
 #### Follow up to-dos
 
