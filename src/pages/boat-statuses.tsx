@@ -1,8 +1,8 @@
 import Head from "next/head"
 import { ContentWithTopNavigation } from "@/features/layouts/ContentWithTopNavigation"
-import { first, isEmpty, isNumber, isUndefined, orderBy, parseInt, toString } from "lodash-es"
+import { first, isEmpty, isNumber, isUndefined, orderBy, parseInt } from "lodash-es"
 import { MuiKanbanContainer } from "@/features/kanban/MuiKanbanContainer"
-import { BaseSyntheticEvent, SyntheticEvent, useCallback, useEffect, useState } from "react"
+import { BaseSyntheticEvent, useCallback, useEffect, useState } from "react"
 import { DropResult } from "react-beautiful-dnd"
 import {
     SwimlaneBoatMap,
