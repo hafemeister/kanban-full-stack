@@ -33,15 +33,5 @@ jobs:
 
             - name: Build and tag image
               run: |-
-              
+                  echo $IMAGE_NAME
                   docker build . --tag "${{ env.IMAGE_NAME }}"
-                  
-            - name: Push image to GCR
-              run: |-
-                  docker push "${{ env.IMAGE_NAME }}"
-                  
-            - id: 'deploy'
-              uses: 'google-github-actions/deploy-cloudrun@v1'
-              with: 
-                  service: "${{ env.GCP_SERVICE_NAME }}"
-                  image: "${{ env.IMAGE_NAME }}"
