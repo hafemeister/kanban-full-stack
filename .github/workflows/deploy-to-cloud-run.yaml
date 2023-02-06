@@ -2,19 +2,18 @@ name: deploy-to-cloud-run
 
 on: [workflow_dispatch, workflow_call]
 
-
-
 env:
     GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
     GCP_REGION: ${{ vars.GCP_REGION }}
     REPO_NAME: ${{ vars.REPO_NAME }}
     GCP_SERVICE_NAME: "kanban-full-stack"
 
+# modelled on sample from here: https://github.com/google-github-actions/example-workflows/blob/main/workflows/deploy-cloudrun/cloudrun-docker.yml
 jobs:
     build-and-deploy:
         permissions:
-            contents: 'read'
-            id-token: 'write'
+            contents: "read"
+            id-token: "write"
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v3
@@ -23,12 +22,12 @@ jobs:
             - name: set IMAGE_NAME env value
               run: echo "IMAGE_NAME=gcr.io/$GCP_PROJECT/$REPO_NAME:$GITHUB_SHA" >> $GITHUB_ENV
             - run: echo "Storing output as $IMAGE_NAME"
-            
+
             - uses: google-github-actions/auth@v1
               with:
                   credentials_json: ${{ secrets.GCP_SA_KEY }}
                   service_account: ${{ secrets.GCP_SA_EMAIL }}
-    
+
             - name: Enable the necessary APIs and enable docker auth
               run: |-
                   gcloud services enable containerregistry.googleapis.com
@@ -43,10 +42,18 @@ jobs:
             - name: Push image to GCR
               run: |-
                   docker push "$IMAGE_NAME"
-                  
-            - name: deploy to google cloud platform
-              uses: 'google-github-actions/deploy-cloudrun@v1'
-              with: 
-                  service: "${{ env.GCP_SERVICE_NAME }}"
-                  image: "${{ env.IMAGE_NAME }}"
 
+            - name: deploy to google cloud platform
+              id: deploy
+              uses: "google-github-actions/deploy-cloudrun@v1"
+              with:
+                  service: "${{ env.GCP_SERVICE_NAME }}"
+                  region: ${{ env.GCP_REGION }}
+                  image: "${{ env.IMAGE_NAME }}"
+              # NOTE: You can also set env variables here:
+              #  env_vars: |
+              #  NODE_ENV=production
+              #  TOKEN_EXPIRE=6400
+
+            - name: Show Output
+              run: echo ${{ steps.deploy.outputs.url }}
