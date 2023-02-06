@@ -19,5 +19,5 @@ jobs:
         steps:
             - uses: actions/checkout@v3
             - name: set IMAGE_NAME env value
-              run: echo "IMAGE_NAME=${echo gcr.io/$GCP_PROJECT/$REPO_NAME:$GITHUB_SHA}" >> $GITHUB_ENV
+              run: echo "IMAGE_NAME=gcr.io/$GCP_PROJECT/$REPO_NAME:$GITHUB_SHA" >> $GITHUB_ENV
             - run: echo $IMAGE_NAME
