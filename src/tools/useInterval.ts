@@ -1,6 +1,8 @@
 import { isFunction } from "lodash-es"
 import { useEffect, useRef } from "react"
 
+export const suspendIntervalFlag = -1
+
 // adopted to typescript from the original of the man himself!
 // https://overreacted.io/making-setinterval-declarative-with-react-hooks/
 export function useInterval(callback: VoidFunction, delay: number) {
@@ -19,7 +21,7 @@ export function useInterval(callback: VoidFunction, delay: number) {
             }
         }
 
-        if (delay !== null) {
+        if (delay !== suspendIntervalFlag) {
             const id = setInterval(tick, delay)
             return () => clearInterval(id)
         }

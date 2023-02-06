@@ -54,8 +54,6 @@ Build a simple web application that provides a functional kanban-like implementa
 -   make model load generic
 -   figure out if writeAttribute guards are actually needed
 
--   feat: need ui controls for delete of single boat
--   feat: edit boat name feature
 -   document
 -   add tests
 -   feat: hook up context values for switching between operator and

@@ -1,8 +1,8 @@
 import Head from "next/head"
 import { ContentWithTopNavigation } from "@/features/layouts/ContentWithTopNavigation"
-import { first, isEmpty, isUndefined, orderBy } from "lodash-es"
+import { first, isEmpty, isNumber, isUndefined, orderBy, parseInt, toString } from "lodash-es"
 import { MuiKanbanContainer } from "@/features/kanban/MuiKanbanContainer"
-import { useCallback, useEffect, useState } from "react"
+import { BaseSyntheticEvent, SyntheticEvent, useCallback, useEffect, useState } from "react"
 import { DropResult } from "react-beautiful-dnd"
 import {
     SwimlaneBoatMap,
@@ -17,17 +17,19 @@ import {
     Card,
     CardContent,
     Grid,
-    Switch,
+    ToggleButton,
+    ToggleButtonGroup,
     Typography,
 } from "@mui/material"
 import { BoatCreatorControl } from "@/features/boat-tracking/BoatCreatorControl"
 import { BoatResetControl } from "@/features/boat-tracking/BoatResetControl"
 import { ExpandMore } from "@mui/icons-material"
 import { Stack } from "@mui/system"
+import { suspendIntervalFlag, useInterval } from "@/tools/useInterval"
 
 export default function BoatStatuses() {
-    const [{ isLoading, swimlanes, autoRefresh, refreshedAt }, setState] = useState({
-        autoRefresh: false,
+    const [{ isLoading, swimlanes, autoRefreshInterval, refreshedAt }, setState] = useState({
+        autoRefreshInterval: suspendIntervalFlag,
         isLoading: true,
         swimlanes: {} as SwimlaneBoatMap,
         refreshedAt: undefined as Date | undefined,
@@ -70,7 +72,22 @@ export default function BoatStatuses() {
         setState((s) => ({ ...s, swimlanes: result, isLoading: false, refreshedAt: new Date() }))
     }, [])
 
-    // useInterval(refreshStatuses, 10000)
+    const autoRefreshHandler = useCallback(async () => {
+        await refreshStatuses()
+        console.log("Finished auto refresh at", new Date().toLocaleTimeString())
+    }, [refreshStatuses])
+
+    useInterval(autoRefreshHandler, autoRefreshInterval)
+
+    const handleIntervalChange = useCallback((e: BaseSyntheticEvent) => {
+        const formValue = parseInt(e?.target?.value)
+        let newValue = suspendIntervalFlag
+        if (isNumber(formValue) && formValue > 0) {
+            newValue = formValue
+        }
+
+        setState((s) => ({ ...s, autoRefreshInterval: newValue }))
+    }, [])
 
     useEffect(() => {
         refreshStatuses()
@@ -130,7 +147,7 @@ export default function BoatStatuses() {
                                     alignContent={"center"}
                                 >
                                     <Box display="flex" justifyContent="center" alignItems="center">
-                                        <Switch
+                                        {/* <Switch
                                             onClick={() =>
                                                 setState((s) => ({
                                                     ...s,
@@ -138,7 +155,31 @@ export default function BoatStatuses() {
                                                 }))
                                             }
                                         />
-                                        auto-refresh {autoRefresh ? "is active" : "is disabled"}
+                                        auto-refresh {autoRefresh ? "is active" : "is disabled"} */}
+                                        Auto refresh data interval:
+                                        <ToggleButtonGroup
+                                            value={autoRefreshInterval}
+                                            exclusive
+                                            onChange={handleIntervalChange}
+                                            aria-label="auto refresh interval"
+                                            sx={{ ml: 2 }}
+                                        >
+                                            <ToggleButton
+                                                value={suspendIntervalFlag}
+                                                aria-label="Never"
+                                            >
+                                                Never
+                                            </ToggleButton>
+                                            <ToggleButton value={10000} aria-label="centered">
+                                                10s
+                                            </ToggleButton>
+                                            <ToggleButton value={60000} aria-label="right aligned">
+                                                60s
+                                            </ToggleButton>
+                                            <ToggleButton value={600000} aria-label="justified">
+                                                10m
+                                            </ToggleButton>
+                                        </ToggleButtonGroup>
                                     </Box>
                                     <Box display="flex" justifyContent="center" alignItems="center">
                                         {refreshedAt && (
