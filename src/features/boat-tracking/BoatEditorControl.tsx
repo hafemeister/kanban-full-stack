@@ -39,7 +39,10 @@ export function BoatEditorControl({
 
     return (
         <>
-            <IconButton onClick={() => setState((s) => ({ ...s, showForm: true }))}>
+            <IconButton
+                aria-label="edit boat"
+                onClick={() => setState((s) => ({ ...s, showForm: true }))}
+            >
                 <Edit />
             </IconButton>
 

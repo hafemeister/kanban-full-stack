@@ -4,19 +4,19 @@ import { BoatEditorControl } from "./BoatEditorControl"
 
 describe("BoatCreatorControl component", () => {
     it("renders without failure", () => {
-        const { getByText } = render(
+        const { getByLabelText } = render(
             <BoatEditorControl name="boatName" id="123" dataChangeListener={jest.fn()} />
         )
 
-        const result = getByText(/add a boat/i)
-        expect(result).toBeInTheDocument()
+        const button = getByLabelText(/edit boat/i)
+        expect(button).toBeInTheDocument()
     })
     it("shows form on click of add button", () => {
-        const { getByText, queryByText, getAllByText } = render(
+        const { getByLabelText, queryByText, getAllByText } = render(
             <BoatEditorControl name="boatName" id="123" dataChangeListener={jest.fn()} />
         )
 
-        const button = getByText(/add a boat/i)
+        const button = getByLabelText(/edit boat/i)
         const inputNotVisible = queryByText(/enter the name/i)
 
         expect(button).toBeInTheDocument()
