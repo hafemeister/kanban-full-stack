@@ -19,5 +19,6 @@ jobs:
         permissions:
             contents: "read"
             id-token: "write"
+        secrets: inherit
         needs: call-inspect-code
         uses: hafemeister/kanban-full-stack/.github/workflows/deploy-to-cloud-run.yaml@main
