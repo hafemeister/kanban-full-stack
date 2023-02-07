@@ -2,7 +2,11 @@ import Head from "next/head"
 import { ModeSelectionContainer } from "@/features/mode-selection/ModeSelectionContainer"
 import { ContentWithTopNavigation } from "@/features/layouts/ContentWithTopNavigation"
 
-export default function Home() {
+/**
+ * to simplify the interface for users, we let them select their application mode on first load of the app
+ * this page is the gateway for managing the display of those parts
+ */
+export default function SelectMode() {
     return (
         <>
             <Head>

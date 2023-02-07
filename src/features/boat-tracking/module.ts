@@ -1,7 +1,7 @@
 import { BoatFields } from "@/backend/models/boats"
 import { ID } from "@/backend/models/types"
 import { ServerResponseCodes } from "@/constants/server"
-import { groupBy, isEmpty } from "lodash-es"
+import { groupBy, isEmpty, isUndefined } from "lodash-es"
 
 type BoatCardValues = {
     id: ID
@@ -151,4 +151,36 @@ export async function resetSwimlanesAndBoats(): Promise<boolean> {
     const result = await response.json()
 
     return result
+}
+
+/**
+ * takes the values of a drop event and turns them into an updated map of swimlane items
+ *
+ * @param swimlanes
+ * @param changeContext
+ */
+export function calculateNewSwimlanePositions(
+    swimlanes: SwimlaneBoatMap,
+    changeContext: {
+        source: { droppableId: ID; index: number }
+        destination?: { droppableId: ID; index: number } | null
+    }
+): { swimlanes: SwimlaneBoatMap; updatedItemId: string; newLaneId: string } | false {
+    const { droppableId: oldLaneId, index: oldLaneIndex } = changeContext.source
+    const { droppableId: newLaneId, index: newLaneIndex } = changeContext.destination || {}
+    if (isUndefined(newLaneId) || isUndefined(newLaneIndex)) {
+        return false
+    }
+
+    // do not split early, as that will cause "blinking" effect
+    const item = swimlanes[oldLaneId].items[oldLaneIndex]
+    if (!item) {
+        console.error("Unknown error when looking at drop result", { changeContext })
+        return false
+    }
+
+    swimlanes[oldLaneId].items.splice(oldLaneIndex, 1)
+    swimlanes[newLaneId].items.splice(newLaneIndex, 0, item)
+
+    return { swimlanes, updatedItemId: item.id, newLaneId }
 }

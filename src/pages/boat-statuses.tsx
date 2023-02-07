@@ -1,33 +1,25 @@
 import Head from "next/head"
 import { ContentWithTopNavigation } from "@/features/layouts/ContentWithTopNavigation"
-import { first, isEmpty, isNumber, isUndefined, orderBy, parseInt } from "lodash-es"
+import { first, isEmpty, isNumber, isObject, isUndefined, orderBy, parseInt } from "lodash-es"
 import { MuiKanbanContainer } from "@/features/kanban/MuiKanbanContainer"
 import { BaseSyntheticEvent, useCallback, useEffect, useState } from "react"
 import { DropResult } from "react-beautiful-dnd"
 import {
     SwimlaneBoatMap,
+    calculateNewSwimlanePositions,
     fetchBoatsAndGroupBySwimlanes,
     updateBoatStatus,
 } from "@/features/boat-tracking/module"
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Box,
-    Card,
-    CardContent,
-    Grid,
-    ToggleButton,
-    ToggleButtonGroup,
-    Typography,
-} from "@mui/material"
 import { BoatCreatorControl } from "@/features/boat-tracking/BoatCreatorControl"
-import { BoatResetControl } from "@/features/boat-tracking/BoatResetControl"
-import { ExpandMore } from "@mui/icons-material"
-import { Stack } from "@mui/system"
 import { suspendIntervalFlag, useInterval } from "@/tools/useInterval"
+import { useStoredUserGroup } from "@/features/mode-selection/useStoredUserGroup"
+import { UserGroup } from "@/features/mode-selection/constants"
+import { AdvancedTrackingToolsBox } from "@/features/boat-tracking/AdvancedTrackingToolBox"
+import { RefreshIntervalControl } from "@/features/boat-tracking/RefreshIntervalControl"
+import { RefreshTrackingCard } from "@/features/boat-tracking/RefreshTrackingCard"
 
 export default function BoatStatuses() {
+    const [activatedUserGroup] = useStoredUserGroup()
     const [{ isLoading, swimlanes, autoRefreshInterval, refreshedAt }, setState] = useState({
         autoRefreshInterval: suspendIntervalFlag,
         isLoading: true,
@@ -38,25 +30,19 @@ export default function BoatStatuses() {
 
     const moveBoat = useCallback(
         async (dropResult: DropResult) => {
-            const { droppableId: oldLaneId, index: oldLaneIndex } = dropResult.source
-            const { droppableId: newLaneId, index: newLaneIndex } = dropResult.destination || {}
-            if (isUndefined(newLaneId) || isUndefined(newLaneIndex)) {
+            const result = calculateNewSwimlanePositions(swimlanes, dropResult)
+            if (!isObject(result)) {
                 return
             }
 
-            // do not split early, as that will cause "blinking" effect
-            const item = swimlanes[oldLaneId].items[oldLaneIndex]
-            if (!item) {
-                console.error("Unknown error when looking at drop result", { dropResult })
-                return
-            }
+            setState((s) => ({
+                ...s,
+                swimlanes: result.swimlanes,
+                isLoading: false,
+            }))
 
-            swimlanes[oldLaneId].items.splice(oldLaneIndex, 1)
-            swimlanes[newLaneId].items.splice(newLaneIndex, 0, item)
-            setState((s) => ({ ...s, swimlanes, isLoading: false }))
-
-            const result = await updateBoatStatus(item.id, newLaneId)
-            if (isUndefined(result)) {
+            const updateResult = await updateBoatStatus(result.updatedItemId, result.newLaneId)
+            if (isUndefined(updateResult)) {
                 console.error("Unable to update the boat status")
                 return
             }
@@ -94,7 +80,7 @@ export default function BoatStatuses() {
     }, [refreshStatuses])
 
     const isFirstLoad = isEmpty(swimlanes) && isLoading
-    const canAddBoat = true
+    const showCoordinatorControls = activatedUserGroup === UserGroup.OfficeCoordinator
     const orderedSwimlanes = orderBy(swimlanes, "position")
 
     return (
@@ -115,95 +101,31 @@ export default function BoatStatuses() {
                 allowActions={!isLoading}
                 title="Boat Statuses"
             >
-                {canAddBoat && (
-                    <Accordion sx={{ my: 2, backgroundColor: "warning.light" }}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Typography>Advanced Operator Tools</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <BoatResetControl resetCompletedListener={refreshStatuses} />
-                        </AccordionDetails>
-                    </Accordion>
-                )}
+                <>
+                    {showCoordinatorControls && (
+                        <AdvancedTrackingToolsBox resetCompletedListener={refreshStatuses} />
+                    )}
 
-                <Card sx={{ my: 2 }}>
-                    <CardContent>
-                        <Stack spacing={2}>
-                            {isFirstLoad && (
-                                <Box display="flex" justifyContent="center" alignItems="center">
-                                    One moment please while we load your list of boats...
-                                </Box>
-                            )}
+                    {showCoordinatorControls && (
+                        <BoatCreatorControl
+                            newBoatHandler={refreshStatuses}
+                            statusId={first(orderedSwimlanes)?.id}
+                        />
+                    )}
 
-                            {!isFirstLoad && (
-                                <Grid
-                                    container
-                                    direction={"row"}
-                                    justifyContent={"space-between"}
-                                    alignContent={"center"}
-                                >
-                                    <Box display="flex" justifyContent="center" alignItems="center">
-                                        {/* <Switch
-                                            onClick={() =>
-                                                setState((s) => ({
-                                                    ...s,
-                                                    autoRefresh: !s.autoRefresh,
-                                                }))
-                                            }
-                                        />
-                                        auto-refresh {autoRefresh ? "is active" : "is disabled"} */}
-                                        Auto refresh data interval:
-                                        <ToggleButtonGroup
-                                            value={autoRefreshInterval}
-                                            exclusive
-                                            onChange={handleIntervalChange}
-                                            aria-label="auto refresh interval"
-                                            sx={{ ml: 2 }}
-                                        >
-                                            <ToggleButton
-                                                value={suspendIntervalFlag}
-                                                aria-label="Never"
-                                            >
-                                                Never
-                                            </ToggleButton>
-                                            <ToggleButton value={10000} aria-label="centered">
-                                                10s
-                                            </ToggleButton>
-                                            <ToggleButton value={60000} aria-label="right aligned">
-                                                60s
-                                            </ToggleButton>
-                                            <ToggleButton value={600000} aria-label="justified">
-                                                10m
-                                            </ToggleButton>
-                                        </ToggleButtonGroup>
-                                    </Box>
-                                    <Box display="flex" justifyContent="center" alignItems="center">
-                                        {refreshedAt && (
-                                            <>last refresh at {refreshedAt.toLocaleTimeString()}</>
-                                        )}
-                                    </Box>
-                                </Grid>
-                            )}
-                        </Stack>
-                    </CardContent>
-                </Card>
+                    <RefreshTrackingCard isFirstLoad={isFirstLoad} refreshedAt={refreshedAt}>
+                        <RefreshIntervalControl
+                            value={autoRefreshInterval}
+                            intervalChangeHandler={handleIntervalChange}
+                        />
+                    </RefreshTrackingCard>
 
-                {canAddBoat && (
-                    <BoatCreatorControl
-                        newBoatHandler={refreshStatuses}
-                        statusId={first(orderedSwimlanes)?.id}
+                    <MuiKanbanContainer
+                        swimlanes={orderedSwimlanes}
+                        dragEndHandler={moveBoat}
+                        dataChangeHandler={refreshStatuses}
                     />
-                )}
-
-                <MuiKanbanContainer
-                    swimlanes={orderedSwimlanes}
-                    dragEndHandler={moveBoat}
-                    dataChangeHandler={refreshStatuses}
-                />
+                </>
             </ContentWithTopNavigation>
         </>
     )
