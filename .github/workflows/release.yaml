@@ -16,5 +16,8 @@ jobs:
         uses: hafemeister/kanban-full-stack/.github/workflows/unit-test-code.yaml@main
 
     call-deploy-to-cloud-run:
+        permissions:
+            contents: "read"
+            id-token: "write"
         needs: call-inspect-code
         uses: hafemeister/kanban-full-stack/.github/workflows/deploy-to-cloud-run.yaml@main
