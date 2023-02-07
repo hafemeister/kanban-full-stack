@@ -4,7 +4,7 @@ import { isEmpty, isUndefined } from "lodash-es"
 import { useCallback, useState } from "react"
 import { deleteBoat, updateBoatName } from "./module"
 import { isValidId } from "@/tools/isValidId"
-import { Edit } from "@mui/icons-material"
+import { DirectionsBoatOutlined, Edit } from "@mui/icons-material"
 import { useUserGroupContext } from "@/features/mode-selection/UserGroupContextProvider"
 
 type BoatEditorControlProps = {
@@ -40,7 +40,12 @@ export function BoatEditorControl({
     }, [dataChangeListener, id])
 
     if (!showCoordinatorControls) {
-        return null
+        return (
+            // simple hack to make sure it aligns the same as the edit one
+            <IconButton disableRipple={true} disabled={true}>
+                <DirectionsBoatOutlined />
+            </IconButton>
+        )
     }
 
     return (

@@ -115,11 +115,11 @@ Build a simple web application that provides a functional kanban-like implementa
 
 Things I would have liked to add with more time
 
--   provide a proper offline indicator
 -   explore the usage of environment prefixing to split collections from production/localhost overlap
 -   I had looked forward to toying with the cypress integration test approach and integrating that with git-actions. But unfortunately time ran out
 -   a UI for adding more swimlanes, deleting, reordering would be useful, but would've taken too much time at this point
 
 #### Final reflections:
 
-What a fun build. In my current position I do not have the luxury of touching all aspects of the full stack anymore. Hence taking this opportunity to explore new technologies in a fun weekend project was absolutely worth the extra time spent! =)
+What a fun build!! In my current position I do not have the luxury of touching all aspects of the full stack anymore on a regular basis.
+Hence, taking this opportunity to explore new technologies in a fun weekend project was absolutely worth the extra time spent! =)
