@@ -1,11 +1,11 @@
 import { ID } from "@/backend/models/types"
 import { Button, Dialog, DialogActions, DialogContent, IconButton, TextField } from "@mui/material"
 import { isEmpty, isUndefined } from "lodash-es"
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useState } from "react"
 import { deleteBoat, updateBoatName } from "./module"
 import { isValidId } from "@/tools/isValidId"
 import { Edit } from "@mui/icons-material"
-import { UserGroupContext } from "../mode-selection/UserGroupContextProvider"
+import { useUserGroupContext } from "@/features/mode-selection/UserGroupContextProvider"
 
 type BoatEditorControlProps = {
     dataChangeListener: VoidFunction
@@ -18,7 +18,7 @@ export function BoatEditorControl({
     id,
     name: defaultName,
 }: BoatEditorControlProps) {
-    const { showCoordinatorControls } = useContext(UserGroupContext)
+    const { showCoordinatorControls } = useUserGroupContext()
     const [{ name, showForm }, setState] = useState<{
         name?: string
         showForm: boolean

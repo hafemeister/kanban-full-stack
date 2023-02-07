@@ -1,8 +1,8 @@
 import { Button } from "@mui/material"
 import { useRouter } from "next/router"
-import { useCallback, useContext } from "react"
+import { useCallback } from "react"
 import { UserGroup } from "./constants"
-import { UserGroupContext } from "./UserGroupContextProvider"
+import { useUserGroupContext } from "./UserGroupContextProvider"
 
 type ModeSelectionButtonProps = {
     children: JSX.Element | string
@@ -11,7 +11,7 @@ type ModeSelectionButtonProps = {
 
 export function ModeSelectionButton({ children, group }: ModeSelectionButtonProps) {
     const router = useRouter()
-    const { setGroup } = useContext(UserGroupContext)
+    const { setGroup } = useUserGroupContext()
     const goToBoatStatusPage = useCallback(() => {
         setGroup(group)
 

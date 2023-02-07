@@ -2,7 +2,7 @@ import Head from "next/head"
 import { ContentWithTopNavigation } from "@/features/layouts/ContentWithTopNavigation"
 import { first, isEmpty, isNumber, isObject, isUndefined, orderBy, parseInt } from "lodash-es"
 import { MuiKanbanContainer } from "@/features/kanban/MuiKanbanContainer"
-import { BaseSyntheticEvent, useCallback, useContext, useEffect, useState } from "react"
+import { BaseSyntheticEvent, useCallback, useEffect, useState } from "react"
 import { DropResult } from "react-beautiful-dnd"
 import {
     SwimlaneBoatMap,
@@ -15,10 +15,10 @@ import { suspendIntervalFlag, useInterval } from "@/tools/useInterval"
 import { AdvancedTrackingToolsBox } from "@/features/boat-tracking/AdvancedTrackingToolBox"
 import { RefreshIntervalControl } from "@/features/boat-tracking/RefreshIntervalControl"
 import { RefreshTrackingCard } from "@/features/boat-tracking/RefreshTrackingCard"
-import { UserGroupContext } from "@/features/mode-selection/UserGroupContextProvider"
+import { useUserGroupContext } from "@/features/mode-selection/UserGroupContextProvider"
 
 export default function BoatStatuses() {
-    const { showCoordinatorControls } = useContext(UserGroupContext)
+    const { showCoordinatorControls } = useUserGroupContext()
     const [{ isLoading, swimlanes, autoRefreshInterval, refreshedAt }, setState] = useState({
         autoRefreshInterval: suspendIntervalFlag,
         isLoading: true,

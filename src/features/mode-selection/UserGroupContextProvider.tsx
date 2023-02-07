@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useContext, useState } from "react"
 import { UserGroup } from "./constants"
 
 type UserGroupContextType = {
@@ -27,6 +27,11 @@ export const UserGroupContext = React.createContext<UserGroupContextType>(defaul
 
 type UserGroupContextProviderProps = {
     children: JSX.Element | null
+}
+
+// slightly ugly workaround to ensure we can mock it correctly without too much trouble
+export function useUserGroupContext() {
+    return useContext(UserGroupContext)
 }
 
 export function UserGroupContextProvider({ children }: UserGroupContextProviderProps) {

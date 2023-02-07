@@ -38,7 +38,7 @@ describe("swimlanes page handler", () => {
         expect(mockMethodNotAllowed).toBeCalledTimes(1)
     })
 
-    fit("returns list of all boats on GET request", async () => {
+    it("returns list of all boats on GET request", async () => {
         mockCheckForAllowedRequestMethods.mockReturnValue({ isGet: true, isAllowedMethod: true })
         await pageHandler(MockNextApiRequest, MockNextApiResponse)
 
