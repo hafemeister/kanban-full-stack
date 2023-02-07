@@ -11,9 +11,10 @@ Build a simple web application that provides a functional kanban-like implementa
 -   deployed app: https://kanban-full-stack-iliggirkha-uw.a.run.app/
 -   repository url: https://github.com/hafemeister/kanban-full-stack
 -   Front-end: NextJs pages + MUIv5 + BeautifulReactDnd
--   Back-end: NextJs Api layer + FireStore + Cloud Run for hosting Docker container
+-   Back-end: NextJs Api layer + FireStore + Cloud Run for hosting Docker containermain
 -   Quality Assurance: jest unit tests
 -   CICD: testing and deployment via GitActions
+-   to stay in line with the cultural sensitivity approach in our community, I kept "main" the default branch. But the assignment asked for a master branch, so I kept a copy just in case: https://github.com/hafemeister/kanban-full-stack/tree/master
 
 ---
 
@@ -22,7 +23,7 @@ Build a simple web application that provides a functional kanban-like implementa
 ### Goals
 
 -   have fun
--   learn something new
+-   learn something new (especially excited about using GCP, MUI and diving deeper in my understanding of git actions)
 -   complete the technical challenge requirements
 
 ### Preliminary Plan
@@ -90,23 +91,33 @@ Build a simple web application that provides a functional kanban-like implementa
 
     -   [1000-1200] - general code cleanup, add automations for automating quality inspections, write a handful of unit tests
     -   [1200-1400] - troubleshoot the CICD split and upgrade the cloud-run approach to a more modern, concise version
+    -   [1700-1800] - general documentation
+    -   [1900-2300] - polishing, adding a few last minute improvements, building out some of the more complicated test cases
 
-    30 mins doc
+#### Favorite Results
+
+-   definitely enjoyed taking advantage of the design power and easy that MUI provides! Not being a gifted designer, their tools and options are by far the best I have worked with in a while.
+-   although I had not much time to expand them, writing the unit tests for the more complicated aspects (mocking context, abstract classes etc) was actually a lot of fun!
+-   having spent a ton of time in AWS recently, I was blown away by the easy and extremely well documented SDK tools for the google cloud platform. It just worked extremely seemless, and if it didn't the docs were very easy to track down and comprehend.
+-   Building out the backend resources in REST was a refreshingly nice and simple, especially after having spent the last 6+ months in piles of GraphQL resolvers
 
 #### Learnables
 
--   ui designs too a lot longer than planned for, as not knowing a libary convention did not help in speeding up the code adjustments
+-   ui designs took a lot longer than planned for, as not knowing a libary convention did not help in speeding up the code adjustments
 -   testing drag and drop is rather challenging
 -   spent too much time on making code capable of being reused, instead of accepting a few more repeats to gain speed
 -   spending too much time in feature development forced me to be very skinny on test outputs
 -   I enjoyed the actual technical aspect of coding models and api endpoints a lot more than dealing with ui interactions
+-   the abstract class approach for models makes sense from a DRY re-use perspective, but makes writing simple unit tests a lot more challenging
 
-#### Follow up to-dos
+#### Nice-to-add wishlist
 
--   make model load generic
--   figure out if writeAttribute guards are actually needed
--   document
--   add tests
--   feat: hook up context values for switching between operator and
--   feat: finish environment prefix for collection names
--   feat: add minimum of 6 valuable tests for test coverage
+Things I would have liked to add with more time
+
+-   provide a proper offline indicator
+-   explore the usage of environment prefixing to split collections from production/localhost overlap
+-   I had looked forward to toying with the cypress integration test approach and integrating that with git-actions. But unfortunately time ran out.
+
+#### Final reflections:
+
+What a fun build. In my current position I do not have the luxury of touching all aspects of the full stack anymore. Hence taking this opportunity to explore new technologies in a fun weekend project was absolutely worth the extra time spent! =)
