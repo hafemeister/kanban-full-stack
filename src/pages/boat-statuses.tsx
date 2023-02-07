@@ -2,7 +2,7 @@ import Head from "next/head"
 import { ContentWithTopNavigation } from "@/features/layouts/ContentWithTopNavigation"
 import { first, isEmpty, isNumber, isObject, isUndefined, orderBy, parseInt } from "lodash-es"
 import { MuiKanbanContainer } from "@/features/kanban/MuiKanbanContainer"
-import { BaseSyntheticEvent, useCallback, useEffect, useState } from "react"
+import { BaseSyntheticEvent, useCallback, useContext, useEffect, useState } from "react"
 import { DropResult } from "react-beautiful-dnd"
 import {
     SwimlaneBoatMap,
@@ -12,14 +12,13 @@ import {
 } from "@/features/boat-tracking/module"
 import { BoatCreatorControl } from "@/features/boat-tracking/BoatCreatorControl"
 import { suspendIntervalFlag, useInterval } from "@/tools/useInterval"
-import { useStoredUserGroup } from "@/features/mode-selection/useStoredUserGroup"
-import { UserGroup } from "@/features/mode-selection/constants"
 import { AdvancedTrackingToolsBox } from "@/features/boat-tracking/AdvancedTrackingToolBox"
 import { RefreshIntervalControl } from "@/features/boat-tracking/RefreshIntervalControl"
 import { RefreshTrackingCard } from "@/features/boat-tracking/RefreshTrackingCard"
+import { UserGroupContext } from "@/features/mode-selection/UserGroupContextProvider"
 
 export default function BoatStatuses() {
-    const [activatedUserGroup] = useStoredUserGroup()
+    const { showCoordinatorControls } = useContext(UserGroupContext)
     const [{ isLoading, swimlanes, autoRefreshInterval, refreshedAt }, setState] = useState({
         autoRefreshInterval: suspendIntervalFlag,
         isLoading: true,
@@ -80,7 +79,6 @@ export default function BoatStatuses() {
     }, [refreshStatuses])
 
     const isFirstLoad = isEmpty(swimlanes) && isLoading
-    const showCoordinatorControls = activatedUserGroup === UserGroup.OfficeCoordinator
     const orderedSwimlanes = orderBy(swimlanes, "position")
 
     return (
