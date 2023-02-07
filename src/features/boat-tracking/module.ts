@@ -18,8 +18,24 @@ type SwimlaneWithBoats = {
 
 export type SwimlaneBoatMap = Record<SwimlaneId, SwimlaneWithBoats>
 
+async function fetchAndCatch(
+    input: RequestInfo | URL,
+    init?: RequestInit | undefined
+): Promise<Response | { json: VoidFunction; status: number }> {
+    try {
+        return await fetch(input, init)
+    } catch (error) {
+        console.warn("Encountered a fatal fetch error. Please review the logs", { error })
+    }
+
+    return Promise.resolve({
+        status: ServerResponseCodes.Error,
+        json: () => ({}),
+    })
+}
+
 async function fetchSwimlanes() {
-    const response = await fetch("/api/swimlanes")
+    const response = await fetchAndCatch("/api/swimlanes")
     if (response.status !== ServerResponseCodes.Success) {
         throw new Error("Unable to get the list of swimlanes")
     }
@@ -30,7 +46,7 @@ async function fetchSwimlanes() {
 }
 
 async function fetchBoats() {
-    const response = await fetch("/api/boats")
+    const response = await fetchAndCatch("/api/boats")
     if (response.status !== ServerResponseCodes.Success) {
         throw new Error("Unable to get the list of swimlanes")
     }
@@ -57,7 +73,7 @@ export async function fetchBoatsAndGroupBySwimlanes(): Promise<SwimlaneBoatMap> 
 }
 
 export async function addNewBoat(name: string, swimlaneId: ID): Promise<BoatFields | undefined> {
-    const response = await fetch("/api/boats", {
+    const response = await fetchAndCatch("/api/boats", {
         method: "POST",
         headers: {
             Accept: "application/json",
@@ -79,7 +95,7 @@ export async function addNewBoat(name: string, swimlaneId: ID): Promise<BoatFiel
 }
 
 export async function updateBoatStatus(id: ID, swimlaneId: ID): Promise<BoatFields | undefined> {
-    const response = await fetch(`/api/boats/${id}`, {
+    const response = await fetchAndCatch(`/api/boats/${id}`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
@@ -101,7 +117,7 @@ export async function updateBoatStatus(id: ID, swimlaneId: ID): Promise<BoatFiel
 }
 
 export async function updateBoatName(id: ID, name: string): Promise<BoatFields | undefined> {
-    const response = await fetch(`/api/boats/${id}`, {
+    const response = await fetchAndCatch(`/api/boats/${id}`, {
         method: "PUT",
         headers: {
             Accept: "application/json",
@@ -123,7 +139,7 @@ export async function updateBoatName(id: ID, name: string): Promise<BoatFields |
 }
 
 export async function deleteBoat(id: ID): Promise<boolean> {
-    const response = await fetch(`/api/boats/${id}`, {
+    const response = await fetchAndCatch(`/api/boats/${id}`, {
         method: "DELETE",
         headers: {
             Accept: "application/json",
@@ -135,7 +151,7 @@ export async function deleteBoat(id: ID): Promise<boolean> {
 }
 
 export async function resetSwimlanesAndBoats(): Promise<boolean> {
-    const response = await fetch(`/api/reset`, {
+    const response = await fetchAndCatch(`/api/reset`, {
         method: "POST",
         headers: {
             Accept: "application/json",

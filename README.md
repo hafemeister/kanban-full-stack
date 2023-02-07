@@ -66,6 +66,7 @@ Build a simple web application that provides a functional kanban-like implementa
 
 #### Assumptions
 
+-   the instructions were not very clear on the extra content of landing page. Hence, I kept it simple, with a single link to the boat statuses, and one more to allow switching between office and field staff group
 -   the internet connection will be reliable, hence do not need to implement local-storage syncing, which will reduce the prototype complexity by alot
 -   the boat entity contains only a name to be edited, keeping any other ui elements to a minimum
 -   as requested, no authentication, which means the main page is the entry point, but as per user story, we only show a link that takes user to statuses page
@@ -116,7 +117,8 @@ Things I would have liked to add with more time
 
 -   provide a proper offline indicator
 -   explore the usage of environment prefixing to split collections from production/localhost overlap
--   I had looked forward to toying with the cypress integration test approach and integrating that with git-actions. But unfortunately time ran out.
+-   I had looked forward to toying with the cypress integration test approach and integrating that with git-actions. But unfortunately time ran out
+-   a UI for adding more swimlanes, deleting, reordering would be useful, but would've taken too much time at this point
 
 #### Final reflections:
 

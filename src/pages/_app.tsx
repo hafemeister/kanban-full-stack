@@ -7,13 +7,16 @@ import { lightTheme } from "@/themes/light"
 import { ThemeProvider } from "@mui/material"
 import { UserGroupContextProvider } from "@/features/mode-selection/UserGroupContextProvider"
 import type { AppProps } from "next/app"
+import { OfflineWarningProvider } from "@/features/OfflineWarningProvider"
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
         <ThemeProvider theme={lightTheme}>
-            <UserGroupContextProvider>
-                <Component {...pageProps} />
-            </UserGroupContextProvider>
+            <OfflineWarningProvider>
+                <UserGroupContextProvider>
+                    <Component {...pageProps} />
+                </UserGroupContextProvider>
+            </OfflineWarningProvider>
         </ThemeProvider>
     )
 }
