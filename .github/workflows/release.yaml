@@ -12,7 +12,6 @@ jobs:
         uses: hafemeister/kanban-full-stack/.github/workflows/inspect-code.yaml@main
 
     call-unit-test-code:
-        needs: call-inspect-code
         uses: hafemeister/kanban-full-stack/.github/workflows/unit-test-code.yaml@main
 
     call-deploy-to-cloud-run:
