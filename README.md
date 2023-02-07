@@ -1,4 +1,5 @@
 # Kanban Full Stack Experiment
+![image](https://user-images.githubusercontent.com/78647723/217164993-90e64bf5-39c6-4d05-b2eb-b205ac435dec.png)
 
 ### Objective
 
