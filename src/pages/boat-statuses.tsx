@@ -40,7 +40,12 @@ export default function BoatStatuses() {
                 isLoading: false,
             }))
 
-            const updateResult = await updateBoatStatus(result.updatedItemId, result.newLaneId)
+            const { updatedItem } = result
+            const updateResult = await updateBoatStatus(
+                updatedItem.id,
+                result.newLaneId,
+                updatedItem.updatedAt
+            )
             if (isUndefined(updateResult)) {
                 console.error("Unable to update the boat status")
                 return

@@ -1,6 +1,6 @@
 import { Alert, IconButton, Snackbar, Stack, useMediaQuery } from "@mui/material"
 import { KanbanSwimlane } from "@/features/kanban/KanbanSwimlane"
-import { SwimlaneCard } from "@/features/kanban/KanbanSwimlaneCard"
+import { KanbanSwimlaneCard } from "@/features/kanban/KanbanSwimlaneCard"
 import {
     DragDropContext,
     DragStart,
@@ -102,15 +102,15 @@ export function MuiKanbanContainer({
                                             index={index}
                                         >
                                             {(dragTools) => (
-                                                <SwimlaneCard
+                                                <KanbanSwimlaneCard
                                                     id={item.id}
                                                     isDragging={
                                                         isDragging && isDraggingId === item.id
                                                     }
-                                                    title={item.name}
+                                                    item={item}
                                                     dragTools={dragTools}
                                                     dataChangeHandler={dataChangeHandler}
-                                                ></SwimlaneCard>
+                                                ></KanbanSwimlaneCard>
                                             )}
                                         </Draggable>
                                     ))}

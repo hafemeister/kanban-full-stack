@@ -1,5 +1,5 @@
 import { AvailableFirestoreCollections, QueryDocumentSnapshot } from "@/integrations/google-cloud"
-import { ID } from "./types"
+import { ID, IsoDateTime } from "./types"
 import { isEmpty, isUndefined } from "lodash-es"
 import { CollectionReference } from "@google-cloud/firestore"
 import { collectionWithEnvironmentPrefix } from "@/integrations/google-cloud/firestore/module"
@@ -71,7 +71,7 @@ export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields> {
         return this
     }
 
-    async save(updatedFields?: Partial<ModelFields>) {
+    async save(updatedFields?: Partial<ModelFields> & { updatedAt?: IsoDateTime }) {
         const id = this?.fields?.id
         const isNew = isEmpty(id) || isUndefined(id)
 
@@ -80,15 +80,18 @@ export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields> {
         }
         const nowInIso = new Date().toISOString()
 
+        // late addition to allow frontend to set the updateAt -- obviously not ideal, but just a temp fix
+        const updatedAt = updatedFields?.updatedAt || nowInIso
+
         await this.source()
             .doc(id)
-            .set({ ...this.fields, ...(updatedFields || {}), updatedAt: nowInIso }, { merge: true })
+            .set({ ...this.fields, ...(updatedFields || {}), updatedAt }, { merge: true })
 
         this.fields = {
             ...this.fields,
             ...updatedFields,
             id,
-            updatedAt: nowInIso,
+            updatedAt,
         }
 
         return this

@@ -1,11 +1,12 @@
 import { BoatFields } from "@/backend/models/boats"
 import { ID } from "@/backend/models/types"
 import { ServerResponseCodes } from "@/constants/server"
-import { groupBy, isEmpty, isUndefined } from "lodash-es"
+import { groupBy, isEmpty, isUndefined, map, orderBy } from "lodash-es"
 
 type BoatCardValues = {
     id: ID
     name: string
+    updatedAt: Date
 }
 
 type SwimlaneId = ID
@@ -60,13 +61,16 @@ export async function fetchBoatsAndGroupBySwimlanes(): Promise<SwimlaneBoatMap> 
     const swimlanes = await fetchSwimlanes()
 
     const boats = await fetchBoats()
-    const groupedBoats = groupBy(boats, "swimlaneId")
+    const groupedBoats = groupBy(
+        map(boats, (boat) => ({ ...boat, updatedAt: new Date(boat.updatedAt) })),
+        "swimlaneId"
+    )
 
     const result = {} as SwimlaneBoatMap
     for (const lane of swimlanes) {
         const { id } = lane
         result[id] = lane
-        result[id].items = groupedBoats[id] || []
+        result[id].items = orderBy(groupedBoats[id], "updatedAt", "desc") || []
     }
 
     return result
@@ -94,7 +98,11 @@ export async function addNewBoat(name: string, swimlaneId: ID): Promise<BoatFiel
     return result as BoatFields
 }
 
-export async function updateBoatStatus(id: ID, swimlaneId: ID): Promise<BoatFields | undefined> {
+export async function updateBoatStatus(
+    id: ID,
+    swimlaneId: ID,
+    updatedAt: Date
+): Promise<BoatFields | undefined> {
     const response = await fetchAndCatch(`/api/boats/${id}`, {
         method: "PUT",
         headers: {
@@ -104,6 +112,7 @@ export async function updateBoatStatus(id: ID, swimlaneId: ID): Promise<BoatFiel
         body: JSON.stringify({
             id,
             swimlaneId,
+            updatedAt: updatedAt.toISOString(),
         }),
     })
 
@@ -181,7 +190,7 @@ export function calculateNewSwimlanePositions(
         source: { droppableId: ID; index: number }
         destination?: { droppableId: ID; index: number } | null
     }
-): { swimlanes: SwimlaneBoatMap; updatedItemId: string; newLaneId: string } | false {
+): { swimlanes: SwimlaneBoatMap; updatedItem: BoatCardValues; newLaneId: string } | false {
     const { droppableId: oldLaneId, index: oldLaneIndex } = changeContext.source
     const { droppableId: newLaneId, index: newLaneIndex } = changeContext.destination || {}
     if (isUndefined(newLaneId) || isUndefined(newLaneIndex)) {
@@ -195,8 +204,11 @@ export function calculateNewSwimlanePositions(
         return false
     }
 
+    // shim in absence of true syncinc.
+    item.updatedAt = new Date()
+
     swimlanes[oldLaneId].items.splice(oldLaneIndex, 1)
     swimlanes[newLaneId].items.splice(newLaneIndex, 0, item)
 
-    return { swimlanes, updatedItemId: item.id, newLaneId }
+    return { swimlanes, updatedItem: item, newLaneId }
 }

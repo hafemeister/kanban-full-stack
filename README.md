@@ -1,4 +1,5 @@
 # Kanban Full Stack Experiment
+
 ![image](https://user-images.githubusercontent.com/78647723/217164993-90e64bf5-39c6-4d05-b2eb-b205ac435dec.png)
 
 ### Objective
@@ -112,6 +113,14 @@ Build a simple web application that provides a functional kanban-like implementa
 -   I enjoyed the actual technical aspect of coding models and api endpoints a lot more than dealing with ui interactions
 -   the abstract class approach for models makes sense from a DRY re-use perspective, but makes writing simple unit tests a lot more challenging
 
+### Known issues
+
+Although I tried to eliminate as much of the noise as possible, there are a few things that are not ideal:
+
+-   in-lane dragging should not be allowed. just did not have time to look into it. preferably, the boats will be sorted per lane by their last updated date automatically
+-   the long boat names may look funny in cards. preferably the text input would prevent too long of a name
+-   the drag-and-drop release causes a brief margin glitch that makes the cards look too close together
+
 #### Nice-to-add wishlist
 
 Things I would have liked to add with more time
@@ -119,6 +128,7 @@ Things I would have liked to add with more time
 -   explore the usage of environment prefixing to split collections from production/localhost overlap
 -   I had looked forward to toying with the cypress integration test approach and integrating that with git-actions. But unfortunately time ran out
 -   a UI for adding more swimlanes, deleting, reordering would be useful, but would've taken too much time at this point
+-   improve the ordering mechanism in same lane dragging, either position them, or disable the drop in same lane
 
 #### Final reflections:
 
