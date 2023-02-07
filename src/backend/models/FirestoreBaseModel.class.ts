@@ -1,16 +1,8 @@
-import {
-    AvailableFirestoreCollections,
-    QueryDocumentSnapshot,
-    store,
-} from "@/integrations/google-cloud"
+import { AvailableFirestoreCollections, QueryDocumentSnapshot } from "@/integrations/google-cloud"
 import { ID } from "./types"
 import { isEmpty, isUndefined } from "lodash-es"
 import { CollectionReference } from "@google-cloud/firestore"
-
-const collectionPrefix = process.env.KFS_FIRESTORE_COLLECTION_PREFIX || ""
-function collectionWithEnvironmentPrefix(collectionName: string): CollectionReference {
-    return store.collection(`${collectionPrefix}${collectionName}`)
-}
+import { collectionWithEnvironmentPrefix } from "@/integrations/google-cloud/firestore/module"
 
 export type BaseModelFields = {
     id?: ID
@@ -38,7 +30,7 @@ export abstract class FirestoreBaseModel<ModelFields extends BaseModelFields> {
         }
     }
 
-    static async listAllDocuments<ModelFields>(collectionName: string): Promise<ModelFields[]> {
+    async listAllDocuments<ModelFields>(collectionName: string): Promise<ModelFields[]> {
         const snapshot = await collectionWithEnvironmentPrefix(collectionName).get()
 
         const result = [] as ModelFields[]

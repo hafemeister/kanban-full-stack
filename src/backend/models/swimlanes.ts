@@ -1,6 +1,6 @@
 import { isUndefined } from "lodash-es"
 import { ID, IsoDateTime } from "./types"
-import { FirestoreBaseModel } from "./firestoreBase"
+import { FirestoreBaseModel } from "./FirestoreBaseModel.class"
 import { AvailableFirestoreCollections } from "@/integrations/google-cloud"
 
 export type SwimlaneFields = {
@@ -14,8 +14,8 @@ export type SwimlaneFields = {
 export class SwimlaneModel extends FirestoreBaseModel<SwimlaneFields> {
     static collectionName = AvailableFirestoreCollections.Swimlanes
 
-    constructor(fields: Partial<SwimlaneFields>) {
-        super(SwimlaneModel.collectionName, fields)
+    constructor(fields?: Partial<SwimlaneFields>) {
+        super(SwimlaneModel.collectionName, fields || {})
     }
 
     async load(): Promise<SwimlaneModel | undefined> {
@@ -33,7 +33,7 @@ export class SwimlaneModel extends FirestoreBaseModel<SwimlaneFields> {
         }
     }
 
-    static async listAll(): Promise<SwimlaneFields[]> {
+    async listAll(): Promise<SwimlaneFields[]> {
         return await this.listAllDocuments<SwimlaneFields>(this.collectionName)
     }
 

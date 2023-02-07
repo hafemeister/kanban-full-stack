@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     if (isGet) {
-        const result = await SwimlaneModel.listAll()
+        const result = await new SwimlaneModel().listAll()
 
         return jsonSuccess(res, result)
     }

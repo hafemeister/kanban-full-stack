@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     if (isGet) {
-        const result = await BoatModel.listAll()
+        const result = await new BoatModel().listAll()
 
         return jsonSuccess(res, result)
     }

@@ -1,4 +1,4 @@
-import { Firestore, Query } from "@google-cloud/firestore"
+import { CollectionReference, Firestore, Query } from "@google-cloud/firestore"
 import { AvailableFirestoreCollections, store } from "./firestore.config"
 
 // modified for our use from original found here: https://cloud.google.com/firestore/docs/manage-data/delete-data#collections
@@ -40,4 +40,9 @@ async function deleteQueryBatch(
     process.nextTick(() => {
         deleteQueryBatch(store, query, resolve)
     })
+}
+
+const collectionPrefix = process.env.KFS_FIRESTORE_COLLECTION_PREFIX || ""
+export function collectionWithEnvironmentPrefix(collectionName: string): CollectionReference {
+    return store.collection(`${collectionPrefix}${collectionName}`)
 }
